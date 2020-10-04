@@ -1,11 +1,9 @@
 # Equipo
 
-[Guido Mitolo](https://github.com/guidomitolo)
-[Thomas Artopoulos](https://github.com/thomasartopoulos)
-[Jonatan Smith](https://github.com/John31991)
+[Guido Mitolo](https://github.com/guidomitolo) \
+[Thomas Artopoulos](https://github.com/thomasartopoulos)\
+[Jonatan Smith](https://github.com/John31991)\
 [David G. Nexans](https://github.com/cnexans)
-
-
 
 # Referencias
 
