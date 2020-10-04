@@ -1,3 +1,12 @@
+# Equipo
+
+[Guido Mitolo](https://github.com/guidomitolo)
+[Thomas Artopoulos](https://github.com/thomasartopoulos)
+[Jonatan Smith](https://github.com/John31991)
+[David G. Nexans](https://github.com/cnexans)
+
+
+
 # Referencias
 
 [Algorithmic Trading 101](https://towardsdatascience.com/algorithmic-trading-101-1f9bb503e22a)
