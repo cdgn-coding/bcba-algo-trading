@@ -1,0 +1,6 @@
+catboost_info/*
+data/*
+debug.log
+.vscode
+notas
+models/

@@ -2,7 +2,6 @@ import numpy as np
 
 np.random.seed(42)
 
-
 def format_time(t):
     """Return a formatted time string 'HH:MM:SS
     based on a numeric time() value"""
