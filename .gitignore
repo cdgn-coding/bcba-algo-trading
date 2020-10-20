@@ -1,6 +1,8 @@
 catboost_info/*
-data/*
+data/*.pkl
+data/*.csv
 debug.log
 .vscode
 notas
 models/
+__pycache__
