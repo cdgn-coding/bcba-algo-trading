@@ -15,14 +15,10 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 import xgboost as xgb
-import pickle
-
-"""
-    Prepare runtime
-"""
-subprocess.call(['pip', 'install', 'catboost'])
+import joblib
 
 def train_and_evaluate(args):
+    print(f'Running on target = {args.target} {type(args.target)}')
     """
         Constants
     """
@@ -38,19 +34,22 @@ def train_and_evaluate(args):
     ]
     categorical_features = ['Month', 'Weekday', 'Ticker', 'Currency']
     features = continuous_features + categorical_features
+    target = args.target
     """
         Load and prepare dataset
     """
     subprocess.call([
         'gsutil', 'cp',
         # Storage path
-        os.path.join(BUCKET_PROTOCOL, BUCKET_NAME, BUCKET_STORAGE_PATH, 'all_tickers_last_decade_features.pkl'),
+        os.path.join(BUCKET_PROTOCOL, BUCKET_NAME, BUCKET_STORAGE_PATH, 'all_tickers_last_decade_features.csv'),
         # Local path
-        os.path.join(LOCAL_PATH, 'dataset.pkl')
+        os.path.join(LOCAL_PATH, 'dataset.csv')
     ])
-    dataset = pd.read_pickle(os.path.join(LOCAL_PATH, 'dataset.pkl'))
-    target = args.target
-    model_data = dataset[features + [target]].dropna()
+    dataset = pd.read_csv(os.path.join(LOCAL_PATH, 'dataset.csv'), index_col = 0)
+
+    print(f'Loaded model f{dataset.shape}')
+
+    model_data = dataset[features + [target]]
 
     """
         Create Pipeline
@@ -78,14 +77,8 @@ def train_and_evaluate(args):
             'estimator__n_estimators': [10, 30, 100]
         },
         {
-            'estimator': [LGBMRegressor(random_state = 42, silent = True)],
+            'estimator': [xgb.XGBRegressor(reg_lambda=1, gamma=0, max_depth=3)],
             'estimator__n_estimators': [10, 30, 100]
-        },
-        {
-            'estimator': [CatBoostRegressor(verbose = False)],
-        },
-        {
-            'estimator': [xgb.XGBRegressor(n_estimators=100, reg_lambda=1, gamma=0, max_depth=3)]
         }
     ]
 
@@ -94,7 +87,7 @@ def train_and_evaluate(args):
         Separate in train test
     """
     features = continuous_features + categorical_features
-    X = model_data[features]
+    X = model_data.loc[:, features]
     y = model_data[target]
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -112,7 +105,8 @@ def train_and_evaluate(args):
     model = GridSearchCV(
         pipeline, params_grid, cv = cv,
         scoring='neg_mean_squared_error',
-        return_train_score = True, n_jobs=-1
+        return_train_score = True, n_jobs=-1,
+        verbose=10
     )
     model.fit(X_train, y_train)
 
@@ -122,19 +116,14 @@ def train_and_evaluate(args):
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
     rmse = np.sqrt(mse)
-
     scores = pd.DataFrame({ 'MSE': [mse], 'RMSE': [rmse] })
 
     """
         Save metrics and model
     """
-
     # Save model
-    model_filename = f"trained_model_{target}.pkl"
-    model_file = open(model_filename, 'wb')
-    pickle.dump(model, model_file)
-    model_file.close()
-
+    model_filename = f"trained_model_{target}.joblib"
+    joblib.dump(model, os.path.join(LOCAL_PATH, model_filename))
     subprocess.call([
         'gsutil', 'cp',
         # Local path of the model
@@ -143,11 +132,8 @@ def train_and_evaluate(args):
     ])
 
     # Save scores
-    scores_filename = f"model_scores_{target}.pkl"
-    scores_file = open(scores_filename, 'wb')
-    pickle.dump(scores, scores_file)
-    scores_file.close()
-
+    scores_filename = f"model_scores_{target}.csv"
+    scores.to_csv(os.path.join(LOCAL_PATH, scores_filename))
     subprocess.call([
         'gsutil', 'cp',
         # Local path of results
@@ -156,11 +142,8 @@ def train_and_evaluate(args):
     ])
 
     # Save test data
-    test_dataset_filename = f"model_test_{target}.pkl"
-    test_dataset_file = open(test_dataset_filename, 'wb')
-    pickle.dump(X_test, test_dataset_file)
-    test_dataset_file.close()
-
+    test_dataset_filename = f"model_test_{target}.csv"
+    X_test.to_csv(os.path.join(LOCAL_PATH, test_dataset_filename))
     subprocess.call([
         'gsutil', 'cp',
         # Local path of results
@@ -178,5 +161,8 @@ def get_args():
     return args
 
 if __name__ == '__main__':
+    """
+    Prepare runtime
+    """
     args = get_args()
     train_and_evaluate(args)
