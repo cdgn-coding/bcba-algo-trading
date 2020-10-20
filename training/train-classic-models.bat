@@ -1,4 +1,4 @@
-(gcloud ai-platform jobs submit training return_1m ^
+(gcloud ai-platform jobs submit training return_1m__4 ^
     --module-name=classic.model ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
@@ -10,7 +10,7 @@
     -- ^
     --target=Forward_Return_1m
 
-gcloud ai-platform jobs submit training return_2m ^
+gcloud ai-platform jobs submit training return_2m__4 ^
     --module-name=classic.model ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
@@ -22,7 +22,7 @@ gcloud ai-platform jobs submit training return_2m ^
     -- ^
     --target=Forward_Return_2m
 
-gcloud ai-platform jobs submit training return_3m ^
+gcloud ai-platform jobs submit training return_3m__4 ^
     --module-name=classic.model ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
@@ -34,7 +34,7 @@ gcloud ai-platform jobs submit training return_3m ^
     -- ^
     --target=Forward_Return_3m
 
-gcloud ai-platform jobs submit training return_1w ^
+gcloud ai-platform jobs submit training return_1w__4 ^
     --module-name=classic.model ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
