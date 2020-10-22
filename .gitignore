@@ -5,3 +5,4 @@ debug.log
 .vscode
 notas
 __pycache__
+.ipynb_checkpoints
