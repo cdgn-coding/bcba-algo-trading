@@ -4,5 +4,4 @@ data/*.csv
 debug.log
 .vscode
 notas
-models/
 __pycache__
