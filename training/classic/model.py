@@ -14,6 +14,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from scipy.stats import spearmanr
 import xgboost as xgb
 import joblib
 
@@ -54,34 +55,10 @@ def train_and_evaluate(args):
     """
         Create Pipeline
     """
-    class NoTransformer(BaseEstimator, TransformerMixin):
-        def fit(self, X, y=None):
-            return self
-        def transform(self, X):
-            return X
-
     preprocessing_pipeline = ColumnTransformer(transformers = [
-        ('continuous', NoTransformer(), continuous_features),
+        ('continuous', 'passthrough', continuous_features),
         ('categorical', OneHotEncoder(handle_unknown='ignore'), categorical_features)
     ])
-
-    pipeline = Pipeline(steps = [
-        ('preprocessing', preprocessing_pipeline),
-        ('estimator', LinearRegression())
-    ])
-
-    params_grid =[
-        {'estimator':[LinearRegression()]},
-        {
-            'estimator': [RandomForestRegressor()],
-            'estimator__n_estimators': [10, 30, 100]
-        },
-        {
-            'estimator': [xgb.XGBRegressor(reg_lambda=1, gamma=0, max_depth=3)],
-            'estimator__n_estimators': [10, 30, 100]
-        }
-    ]
-
 
     """
         Separate in train test
@@ -100,14 +77,10 @@ def train_and_evaluate(args):
     """
         Train model with gridsearch
     """
-    cv = TimeSeriesSplit(n_splits = 2)
-
-    model = GridSearchCV(
-        pipeline, params_grid, cv = cv,
-        scoring='neg_mean_squared_error',
-        return_train_score = True, n_jobs=-1,
-        verbose=10
-    )
+    model = Pipeline(steps = [
+        ('preprocessing', preprocessing_pipeline),
+        ('estimator', xgb.XGBRegressor(reg_lambda=1, gamma=0, max_depth=5, n_estimators = 100, n_jobs = -1))
+    ])
     model.fit(X_train, y_train)
 
     """
@@ -116,7 +89,13 @@ def train_and_evaluate(args):
     y_pred = model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
     rmse = np.sqrt(mse)
-    scores = pd.DataFrame({ 'MSE': [mse], 'RMSE': [rmse] })
+    spearmanr_coef, spearmanr_p_value = spearmanr(y_test, y_pred)
+    scores = pd.DataFrame({
+        'MSE': [mse],
+        'RMSE': [rmse],
+        'Spearmanr Coef': [spearmanr_coef],
+        'Spearmanr P Value': [spearmanr_p_value]
+    })
 
     """
         Save metrics and model
@@ -143,7 +122,7 @@ def train_and_evaluate(args):
 
     # Save test data
     test_dataset_filename = f"model_test_{target}.csv"
-    X_test.to_csv(os.path.join(LOCAL_PATH, test_dataset_filename))
+    pd.concat([X_test, y_test], axis = 1).to_csv(os.path.join(LOCAL_PATH, test_dataset_filename))
     subprocess.call([
         'gsutil', 'cp',
         # Local path of results
