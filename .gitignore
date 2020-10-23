@@ -6,3 +6,5 @@ debug.log
 notas
 __pycache__
 .ipynb_checkpoints
+/Dashboard/.ipynb_checkpoints
+
