@@ -48,10 +48,10 @@ app.layout = html.Div([
 def update_figure(selected_tickers):
     "keep the figure (id=stock_chart) updated with the human selection (input=ticker_dropdown)"
 
-    # empty list to be filled with the scatter of each ticker
-    data = []
+    # empty list to be filled with the scatter/candlestick of each ticker
+    data=[]
 
-    # draw a scatter for the selected ticker
+    # two iterations: a list of scatter objects before a list of candlestick object
     for ticker in selected_tickers:
         data.append(go.Scatter(x=df[df['Ticker'] == ticker].index,
                                  y=df[df['Ticker'] == ticker]['Close'],
@@ -59,8 +59,77 @@ def update_figure(selected_tickers):
                                  opacity=0.7,
                                  name=ticker,
                                  textposition='bottom center'))
+        
+    for ticker in selected_tickers:
+        data.append(go.Candlestick(x=df[df['Ticker'] == ticker].index,
+                            open=df[df['Ticker'] == ticker]['Open'],
+                            high=df[df['Ticker'] == ticker]['High'],
+                            low=df[df['Ticker'] == ticker]['Low'],
+                            close=df[df['Ticker'] == ticker]['Close'],
+                            visible=False,
+                            showlegend=False))
+    
+    updatemenus = list([
+        dict(
+            buttons=list([
+                dict(
+                    args=[{'visible': [True, False]}],
+                    label='Line',
+                    method='update'
+                ),
+                dict(
+                    args=[{'visible': [False, True]}],
+                    label='Candle',
+                    method='update'
+                ),
+            ]),
+            direction='down',
+            pad={'r': 10, 't': 10},
+            showactive=True,
+            x=0,
+            xanchor='left',
+            y=1.05,
+            yanchor='top'
+        ),
+    ])
 
-    return {'data': data }
+    layout = dict(
+        updatemenus=updatemenus,
+        autosize=False,
+        xaxis=dict(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=1,
+                         label='1m',
+                         step='month',
+                         stepmode='backward'),
+                    dict(count=6,
+                         label='6m',
+                         step='month',
+                         stepmode='backward'),
+                    dict(count=1,
+                         label='YTD',
+                         step='year',
+                         stepmode='todate'),
+                    dict(count=1,
+                         label='1y',
+                         step='year',
+                         stepmode='backward'),
+                    dict(step='all')
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type='date'
+        )
+    )
+
+    # data must be a list of objects and not a list of lists
+    return {
+        "data": data,
+        "layout": layout
+    }
 
 # gets the value from the dropdown and the pagination
 @app.callback(Output('table', 'data'),
