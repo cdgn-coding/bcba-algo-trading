@@ -27,6 +27,7 @@ def train_and_evaluate(args):
     BUCKET_PROTOCOL = 'gs://'
     BUCKET_NAME = 'algo-trading'
     BUCKET_STORAGE_PATH = 'return_signals'
+    OUTPUT_FILE_SUFFIX = 'xgboost'
 
     continuous_features = [
         'Open', 'High', 'Low', 'Close', 'Volume',
@@ -65,7 +66,7 @@ def train_and_evaluate(args):
     """
     features = continuous_features + categorical_features
     X = model_data.loc[:, features]
-    y = model_data[target]
+    y = 100 * model_data[target]
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y,
@@ -101,7 +102,7 @@ def train_and_evaluate(args):
         Save metrics and model
     """
     # Save model
-    model_filename = f"trained_model_{target}.joblib"
+    model_filename = f"{OUTPUT_FILE_SUFFIX}_trained_model_{target}.joblib"
     joblib.dump(model, os.path.join(LOCAL_PATH, model_filename))
     subprocess.call([
         'gsutil', 'cp',
@@ -111,7 +112,7 @@ def train_and_evaluate(args):
     ])
 
     # Save scores
-    scores_filename = f"model_scores_{target}.csv"
+    scores_filename = f"{OUTPUT_FILE_SUFFIX}_model_scores_{target}.csv"
     scores.to_csv(os.path.join(LOCAL_PATH, scores_filename))
     subprocess.call([
         'gsutil', 'cp',
@@ -121,7 +122,7 @@ def train_and_evaluate(args):
     ])
 
     # Save test data
-    test_dataset_filename = f"model_test_{target}.csv"
+    test_dataset_filename = f"{OUTPUT_FILE_SUFFIX}_model_test_{target}.csv"
     pd.concat([X_test, y_test], axis = 1).to_csv(os.path.join(LOCAL_PATH, test_dataset_filename))
     subprocess.call([
         'gsutil', 'cp',

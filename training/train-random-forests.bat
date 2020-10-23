@@ -1,5 +1,5 @@
-(gcloud ai-platform jobs submit training return_signals_model_22_10_2020_2__target_1m ^
-    --module-name=classic.model ^
+(gcloud ai-platform jobs submit training return_signals_model_22_10_2020_3__target_1m ^
+    --module-name=classic.random_forests ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
     --region=us-east1 ^
@@ -10,8 +10,8 @@
     -- ^
     --target=Forward_Return_1m
 
-gcloud ai-platform jobs submit training return_signals_model_22_10_2020_2__target_2m ^
-    --module-name=classic.model ^
+gcloud ai-platform jobs submit training return_signals_model_22_10_2020_3__target_2m ^
+    --module-name=classic.random_forests ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
     --region=us-east1 ^
@@ -22,8 +22,8 @@ gcloud ai-platform jobs submit training return_signals_model_22_10_2020_2__targe
     -- ^
     --target=Forward_Return_2m
 
-gcloud ai-platform jobs submit training return_signals_model_22_10_2020_2__target_3m ^
-    --module-name=classic.model ^
+gcloud ai-platform jobs submit training return_signals_model_22_10_2020_3__target_3m ^
+    --module-name=classic.random_forests ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
     --region=us-east1 ^
@@ -34,8 +34,8 @@ gcloud ai-platform jobs submit training return_signals_model_22_10_2020_2__targe
     -- ^
     --target=Forward_Return_3m
 
-gcloud ai-platform jobs submit training return_signals_model_22_10_2020_2__target_1w ^
-    --module-name=classic.model ^
+gcloud ai-platform jobs submit training return_signals_model_22_10_2020_3__target_1w ^
+    --module-name=classic.random_forests ^
     --package-path=./classic ^
     --staging-bucket=gs://algo-trading ^
     --region=us-east1 ^

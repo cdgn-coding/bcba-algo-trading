@@ -1,0 +1,44 @@
+(gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_1m ^
+    --module-name=mlp.mlp_regressor ^
+    --package-path=./mlp ^
+    --staging-bucket=gs://algo-trading-jobs ^
+    --region=us-east1 ^
+    --scale-tier=BASIC_GPU ^
+    --python-version=3.7 ^
+    --runtime-version=2.2 ^
+    -- ^
+    --version=v2 ^
+    --target=Forward_Return_1m
+gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_1w ^
+    --module-name=mlp.mlp_regressor ^
+    --package-path=./mlp ^
+    --staging-bucket=gs://algo-trading-jobs ^
+    --region=us-east1 ^
+    --scale-tier=BASIC_GPU ^
+    --python-version=3.7 ^
+    --runtime-version=2.2 ^
+    -- ^
+    --version=v2 ^
+    --target=Forward_Return_1w
+gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_2m ^
+    --module-name=mlp.mlp_regressor ^
+    --package-path=./mlp ^
+    --staging-bucket=gs://algo-trading-jobs ^
+    --region=us-east1 ^
+    --scale-tier=BASIC_GPU ^
+    --python-version=3.7 ^
+    --runtime-version=2.2 ^
+    -- ^
+    --version=v2 ^
+    --target=Forward_Return_2m
+gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_3m ^
+    --module-name=mlp.mlp_regressor ^
+    --package-path=./mlp ^
+    --staging-bucket=gs://algo-trading-jobs ^
+    --region=us-east1 ^
+    --scale-tier=BASIC_GPU ^
+    --python-version=3.7 ^
+    --runtime-version=2.2 ^
+    -- ^
+    --version=v2 ^
+    --target=Forward_Return_3m)
