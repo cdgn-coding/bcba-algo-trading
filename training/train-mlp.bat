@@ -1,4 +1,4 @@
-(gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_1m ^
+(gcloud ai-platform jobs submit training mlp_model_23_10_2020_6__target_1m ^
     --module-name=mlp.mlp_regressor ^
     --package-path=./mlp ^
     --staging-bucket=gs://algo-trading-jobs ^
@@ -9,7 +9,7 @@
     -- ^
     --version=v2 ^
     --target=Forward_Return_1m
-gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_1w ^
+gcloud ai-platform jobs submit training mlp_model_23_10_2020_6__target_1w ^
     --module-name=mlp.mlp_regressor ^
     --package-path=./mlp ^
     --staging-bucket=gs://algo-trading-jobs ^
@@ -20,7 +20,7 @@ gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_1w ^
     -- ^
     --version=v2 ^
     --target=Forward_Return_1w
-gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_2m ^
+gcloud ai-platform jobs submit training mlp_model_23_10_2020_6__target_2m ^
     --module-name=mlp.mlp_regressor ^
     --package-path=./mlp ^
     --staging-bucket=gs://algo-trading-jobs ^
@@ -31,7 +31,7 @@ gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_2m ^
     -- ^
     --version=v2 ^
     --target=Forward_Return_2m
-gcloud ai-platform jobs submit training mlp_model_23_10_2020_4__target_3m ^
+gcloud ai-platform jobs submit training mlp_model_23_10_2020_6__target_3m ^
     --module-name=mlp.mlp_regressor ^
     --package-path=./mlp ^
     --staging-bucket=gs://algo-trading-jobs ^

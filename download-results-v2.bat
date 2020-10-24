@@ -1,0 +1,1 @@
+gsutil -m cp -r gs://algo-trading/return_signals_v2/* ./models_v2
