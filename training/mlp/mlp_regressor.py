@@ -67,7 +67,7 @@ def train_and_evaluate(args):
         Create Pipeline
     """
     preprocessing_pipeline = ColumnTransformer(transformers = [
-        ('continuous', 'passthrough', continuous_features),
+        ('continuous', StandardScaler(), continuous_features),
         ('categorical', OneHotEncoder(handle_unknown='ignore', sparse = False), categorical_features)
     ])
 
