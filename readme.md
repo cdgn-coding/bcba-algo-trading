@@ -52,7 +52,7 @@ SUPV | 12%,
 TECO2 | 6%
 
 
-## Estructura del proyectadasdo
+## Estructura del proyecto
 
 Las notebooks sobre las que trabajamos estan numeradas por orden historico de la etapa del proyecto:
 
