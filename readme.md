@@ -51,6 +51,9 @@ PAMP | 8%,
 SUPV | 12%,
 TECO2 | 6%
 
+## Datos
+
+Los procesos de recoleccion e ingenieria de features son lentos y pesados, si se quieren consultar los datos creados, recolectados y utilizados a lo largo del proyecto, se pueden acceder de manera publica desde [este enlace a Google Drive](https://drive.google.com/drive/folders/1loTneiVME7P8hL6v0m1nxLhh2xkCdtyX?usp=sharing): 
 
 ## Estructura del proyecto
 
