@@ -6,7 +6,51 @@ El regresor de retorno de inverion sobre una accion, funciona como una caja negr
 
 En cuanto a la creacion de los portafolios, hemos utilizado una tecnica que se suele denominar "eigen portfolio"<sup>[2]</sup>, que no tiene una traduccion literal al castellano pero en palabras simples: nos permite obtener pesos de portafolio por especie que capturan de forma conjunta la mayor varianza del mercado. En el fondo, esto ha sido implementado utilizando la tecnica de Principal Components Analysis (PCA) descomponiendo la matriz de covarianza de los retornos diarios por accion<sup>[3]</sup><sup>[4]</sup>.
 
-Al principio, habiamos querido utilizar ciertos papeles populares para inversionistas tanto empresariales como de retail, sin embargo nos dimos cuenta que pudimos obtener mejores resultados y un mejor enfoque de negocio dando soporte a un mayor universo del mercado, por lo que incluimos todos los tickers que tienen su correspondiente CDARS. El espacio muestral se volvio lo suficientemente grande como para que los algoritmos deban entrenarse directamente en maquinas especializadas, proveidas a traves de los servicios de Google Cloud, en especial, el AI Platform. Con todo esto aprendido y ejecutado en el proceso, el algoritmo pudo mejorar sus resultados iniciales, los cuales al momento son similares o mejores que los descritos la referencia [1] y mejor proyeccion de aplicacion en el mundo de las inversiones. 
+Al principio, habiamos querido utilizar ciertos papeles populares para inversionistas tanto empresariales como de retail, sin embargo nos dimos cuenta que pudimos obtener mejores resultados y un mejor enfoque de negocio dando soporte a un mayor universo del mercado, por lo que incluimos todos los tickers que tienen su correspondiente CDARS. El espacio muestral se volvio lo suficientemente grande como para que los algoritmos deban entrenarse directamente en maquinas especializadas, proveidas a traves de los servicios de Google Cloud, en especial, el AI Platform. Con todo esto aprendido y ejecutado en el proceso, el algoritmo pudo mejorar sus resultados iniciales, los cuales al momento son similares o mejores que los descritos la referencia [1] y mejor proyeccion de aplicacion en el mundo de las inversiones.
+
+## Resultados
+
+### Regresor de cambio de precio en 3 meses
+
+MSE|RMSE|Spearmanr Coef|Spearmanr P Value
+-- | -- | --| --
+0.0970|0.312|0.292|0.0
+
+### Regresor de cambio de precio en 2 meses
+
+MSE|RMSE|Spearmanr Coef|Spearmanr P Value
+-- | -- | --| --
+0.0521|0.229|0.236|0.0
+
+### Portafolio tecnologico
+
+Ticker | Peso normalizado
+-- | --
+AAPL | 17%
+GOOGL | 15%
+INTC | 15%
+KO | 4%
+MELI | 34%
+MSFT | 15%
+
+### Portafolio conservador
+
+Este portafolio consta de industrias duras como la banca, el aluminio, el petroleo
+
+Ticker | Peso normalizado
+-- | --
+ALUA | 7%,
+BHIP | 8%,
+BMA | 12%,
+CEPU | 10%,
+CVH | 7.5%,
+EDN | 8.5%,
+GGAL | 12%,
+LOMA | 9%,
+PAMP | 8%,
+SUPV | 12%,
+TECO2 | 6%
+
 
 ## Estructura del proyectadasdo
 
@@ -44,6 +88,9 @@ Los modelos efectivamente entrenados se encuentran en la carpetas ```models```, 
 ## Referencias
 
 [1] Jansen, S., 2020. Machine Learning For Algorithmic Trading - Second Edition. 2nd ed. Packt, p.512.
+
 [2] Jansen, S., 2020. Machine Learning For Algorithmic Trading - Second Edition. 2nd ed. Packt, p.646.
+
 [3] Tan, J., 2012. Principal Component Analysis and Portfolio Optimization. SSRN Electronic Journal,.
+
 [4] Lei, D., 2018. Black–Litterman asset allocation model based on principal component analysis (PCA) under uncertainty. Cluster Computing, 22(S2), pp.4299-4306.
