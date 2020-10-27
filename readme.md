@@ -84,9 +84,9 @@ Los modelos efectivamente entrenados se encuentran en la carpetas ```models```, 
 ## Equipo
 
 * [David G. Nexans](https://github.com/cnexans)
-* [Guido Mitolo](https://github.com/guidomitolo) \
-* [Thomas Artopoulos](https://github.com/thomasartopoulos)\
-* [Jonatan Smith](https://github.com/John31991)\
+* [Guido Mitolo](https://github.com/guidomitolo)
+* [Thomas Artopoulos](https://github.com/thomasartopoulos)
+* [Jonatan Smith](https://github.com/John31991)
 
 ## Referencias
 
