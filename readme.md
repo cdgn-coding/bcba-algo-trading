@@ -1,12 +1,12 @@
 # bCBA Algo trading
 
-El objetivo de este proyecto es en primera instancia crear herramientas basadas en ciencias de datos y aprendizaje automatico para inversionistas de retail. Por un lado buscamos crear portafolios que obtengan la mayor varianza del mercado (retorno-riesgo); por otro lado implementamos un regresor para el retorno de inversion que tiene accion en distintos periodos de tiempo de corto y mediano plazo, utilizando varios indicadores tecnicos. Para el uso de estas herramientas hemos creado un dashboard que se actualiza de forma batch cada semana, en el se pueden consultar los distintos tickers que hemos incluido en nuestro trabajo (mas de 400 tickers en la bolsa de estados unidos y sus correspondientes CDARS) y ademas, se puede consultar la prediccion del retorno de inversion por especie.
+El objetivo de este proyecto es en primera instancia crear herramientas basadas en ciencias de datos y aprendizaje automatico para inversionistas de retail. Por un lado buscamos crear portafolios que obtengan la mayor varianza del mercado (retorno-riesgo); por otro lado implementamos un regresor para el retorno de inversion que tiene una accion en distintos periodos de tiempo (corto y mediano plazo), utilizando indicadores tecnicos. Para el uso de estas herramientas hemos creado un dashboard que se actualiza de forma batch cada semana, en el se pueden consultar los distintos tickers que hemos incluido en nuestro trabajo (mas de 400 tickers en la bolsa de estados unidos y sus correspondientes CDARS) y ademas, se puede consultar la prediccion del retorno de inversion por especie.
 
-El regresor de retorno de inverion sobre una accion, funciona como una caja negra que ha sido entrenada para entender los movimientos del mercado dados los indicadores tecnicos, este algoritmo, especificamente un ensamble de arboles, durante el entrenamiento ha aprendido a utilizar indicadores tecnicos para realizar la prediccion. De esta manera, cumple la funcion de asistente para el analisis tecnico y un punto de partida para realizar analisis fundamentales y acotar los espacios de busqueda de oportunidades.
+El regresor de retorno de inverion sobre una accion, funciona como una caja negra que ha sido entrenada para entender los movimientos del mercado dados los indicadores tecnicos. Este algoritmo, especificamente un ensamble de arboles, durante el entrenamiento ha aprendido a utilizar indicadores tecnicos para realizar la prediccion<sup>[1]</sup> de porcentaje de cambio de precio. De esta manera, cumple la funcion de asistente para el analisis tecnico y punto de partida para realizar analisis fundamentales y acotar los espacios de busqueda para oportunidades en forma concreta.
 
-En cuanto a la creacion de los portafolios, hemos utilizado una tecnica que se suele denominar "eigen portfolio", que no tiene una traduccion literal al castellano pero en palabras simples: nos permite obtener pesos de portafolio por especie que capturan de forma conjunta la mayor varianza del mercado. En el fondo, esto ha sido implementado utilizando la tecnica de Principal Components Analysis (PCA) que descompone una matriz en sus autovectores (eigen vectors, de ahi eigen portfolio), esta matriz a descomponer es la matriz de covarianza de los retornos diarios por accion.
+En cuanto a la creacion de los portafolios, hemos utilizado una tecnica que se suele denominar "eigen portfolio"<sup>[2]</sup>, que no tiene una traduccion literal al castellano pero en palabras simples: nos permite obtener pesos de portafolio por especie que capturan de forma conjunta la mayor varianza del mercado. En el fondo, esto ha sido implementado utilizando la tecnica de Principal Components Analysis (PCA) descomponiendo la matriz de covarianza de los retornos diarios por accion<sup>[3]</sup><sup>[4]</sup>.
 
-Al principio, habiamos querido utilizar ciertos papeles populares para inversionistas tanto empresariales como de retail, sin embargo nos dimos cuenta que pudimos obtener mejores resultados y un mejor enfoque de negocio dando soporte a un mayor universo del mercado, por lo que incluimos todos los tickers que tienen su correspondiente CDARS. El espacio muestral se volvio lo suficientemente grande como para que corrieramos los algoritmos directamente en maquinas especializadas, proveidas a traves de los servicios de Google Cloud, especificamente, el AI Platform. Con todo esto aprendido y ejecutado en el proceso, el algoritmo pudo obtener mejores resultados y mejor proyeccion de aplicacion en el mundo de las inversiones. 
+Al principio, habiamos querido utilizar ciertos papeles populares para inversionistas tanto empresariales como de retail, sin embargo nos dimos cuenta que pudimos obtener mejores resultados y un mejor enfoque de negocio dando soporte a un mayor universo del mercado, por lo que incluimos todos los tickers que tienen su correspondiente CDARS. El espacio muestral se volvio lo suficientemente grande como para que los algoritmos deban entrenarse directamente en maquinas especializadas, proveidas a traves de los servicios de Google Cloud, en especial, el AI Platform. Con todo esto aprendido y ejecutado en el proceso, el algoritmo pudo mejorar sus resultados iniciales, los cuales al momento son similares o mejores que los descritos la referencia [1] y mejor proyeccion de aplicacion en el mundo de las inversiones. 
 
 ## Estructura del proyectadasdo
 
@@ -36,16 +36,14 @@ Los modelos efectivamente entrenados se encuentran en la carpetas ```models```, 
 
 ## Equipo
 
-[Guido Mitolo](https://github.com/guidomitolo) \
-[Thomas Artopoulos](https://github.com/thomasartopoulos)\
-[Jonatan Smith](https://github.com/John31991)\
-[David G. Nexans](https://github.com/cnexans)
+* [David G. Nexans](https://github.com/cnexans)
+* [Guido Mitolo](https://github.com/guidomitolo) \
+* [Thomas Artopoulos](https://github.com/thomasartopoulos)\
+* [Jonatan Smith](https://github.com/John31991)\
 
 ## Referencias
 
-[Algorithmic Trading 101](https://towardsdatascience.com/algorithmic-trading-101-1f9bb503e22a)\
-[How My Machine Learning Trading Algorithm Outperformed the SP500 For 10 Years](https://towardsdatascience.com/the-austrian-quant-my-machine-learning-trading-algorithm-outperformed-the-sp500-for-10-years-bf7ee1d6a235)\
-[Application of Machine Learning Techniques to Trading](https://medium.com/auquan/https-medium-com-auquan-machine-learning-techniques-trading-b7120cee4f05)\
-[Machine Learning for Day Trading](https://towardsdatascience.com/machine-learning-for-day-trading-27c08274df54)\
-[Deep Reinforcement Learning for Automated Stock Trading](https://towardsdatascience.com/deep-reinforcement-learning-for-automated-stock-trading-f1dad0126a02)\
-[DeepDow — Portfolio optimization with deep learning](https://towardsdatascience.com/deepdow-portfolio-optimization-with-deep-learning-a3ffdf36eb00)
+[1] Jansen, S., 2020. Machine Learning For Algorithmic Trading - Second Edition. 2nd ed. Packt, p.512.
+[2] Jansen, S., 2020. Machine Learning For Algorithmic Trading - Second Edition. 2nd ed. Packt, p.646.
+[3] Tan, J., 2012. Principal Component Analysis and Portfolio Optimization. SSRN Electronic Journal,.
+[4] Lei, D., 2018. Black–Litterman asset allocation model based on principal component analysis (PCA) under uncertainty. Cluster Computing, 22(S2), pp.4299-4306.
