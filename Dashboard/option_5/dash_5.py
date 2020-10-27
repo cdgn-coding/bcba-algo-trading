@@ -9,14 +9,15 @@ import plotly.graph_objects as go
 import dash_table
 
 
-LOGO = "/assets/bullish_logo.png"
-GIT_LOGO = "/assets/octocat_logo.png"
+LOGO = "/assets/logo-dh-blanco.png"
+GIT_LOGO = "/assets/github.png"
 
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width"}],
     suppress_callback_exceptions=True,
-    external_stylesheets=[dbc.themes.JOURNAL])
+    external_stylesheets=[dbc.themes.JOURNAL]
+)
 
 df = pd.read_pickle("all_tickers_last_decade_features.pkl")
 
@@ -34,20 +35,6 @@ page_2_layout = html.Div([
         [
             html.Div(
                 [
-                    html.Img(
-                        src=LOGO,
-                        id="plotly-image",
-                        style={
-                            "height": "60px",
-                            "width": "auto",
-                            "margin-top": "30px",
-                        },
-                    )
-                ],
-                className="one-third column",
-            ),
-            html.Div(
-                [
                     html.Div(
                         [
                             html.H3(
@@ -62,25 +49,7 @@ page_2_layout = html.Div([
                 ],
                 className="one-half column",
                 id="title",
-            ),
-            html.Div(
-                [
-                    html.A(
-                        html.Button("Learn More", id="learn-more-button"),
-                        href="https://github.com/cnexans/bcba-algo-trading",
-                    ),
-                    html.Img(
-                        src=GIT_LOGO,
-                        style={
-                            "height": "40px",
-                            "margin-top": "30px",
-                            "margin-left": "80px",
-                        },
-                    )
-                ],
-                className="one-third column",
-                id="button",
-            ),
+            )
         ],
         id="header",
         className="row flex-display",
@@ -106,7 +75,7 @@ page_2_layout = html.Div([
                     ),
                 ],
                 className="pretty_container four columns",
-                id="cross-filter-options",
+                id="cross-filter-options"
             ),
             # Bloques
             html.Div(
@@ -148,7 +117,7 @@ page_2_layout = html.Div([
                 className="eight columns",
             ),
         ],
-        className="row flex-display",
+        className="row flex-display main-content-container",
     )
 
 
@@ -156,23 +125,25 @@ page_2_layout = html.Div([
 
 nav_item = dbc.NavItem(dbc.NavLink("Link", href="#"))
 
-dropdown_nav = dbc.DropdownMenu(
-    children=[
-        dbc.DropdownMenuItem("Entry 1"),
-        dbc.DropdownMenuItem("Entry 2"),
-    ],
-    nav=True,
-    in_navbar=True,
-    label="Menu",
-)
+page_2_link = dbc.NavItem(dbc.NavLink("Ver pronostico", href="/page-2"))
 
-default = dbc.NavbarSimple(
-    children=[nav_item, dropdown_nav],
-    brand="Default",
-    brand_href="#",
-    sticky="top",
-    className="mb-5",
-)
+project_link = dbc.NavItem(dbc.NavLink("Ir al codigo del proyecto", href="https://github.com/cnexans/bcba-algo-trading"))
+
+project_link_logo = html.A(
+            html.Img(src=GIT_LOGO, style={ "height": "40px" }),
+            href="https://github.com/cnexans/bcba-algo-trading",
+            className="github-link"
+        )
+
+# dropdown_nav = dbc.DropdownMenu(
+#     children=[
+#         dbc.DropdownMenuItem("Ver recomendacion", href = "/page-2"),
+#         dbc.DropdownMenuItem("Entry 2"),
+#     ],
+#     nav=True,
+#     in_navbar=True,
+#     label="Menu",
+# )
 
 # Create app layout
 page_1_layout = html.Div(
@@ -183,19 +154,6 @@ page_1_layout = html.Div(
         html.Div(id="output-clientside"),
         html.Div(
             [
-                html.Div(
-                    [
-                        html.Img(
-                            src=LOGO,
-                            style={
-                                "height": "60px",
-                                "width": "auto",
-                                "margin-top": "30px",
-                            },
-                        )
-                    ],
-                    className="one-third column",
-                ),
                 html.Div(
                     [
                         html.Div(
@@ -213,43 +171,21 @@ page_1_layout = html.Div(
                     className="one-half column",
                     id="title",
                 ),
-                html.Div(
-                    [
-                        html.Img(
-                            src=GIT_LOGO,
-                            id="plotly-image",
-                            style={
-                                "height": "60px",
-                                "width": "auto",
-                                "margin-top": "30px",
-                            },
-                        ),
-                        html.A(
-                            html.Button("GitHub", id="learn-more-button"),
-                            href="https://github.com/cnexans/bcba-algo-trading",
-                        )
-                    ],
-                    className="one-third column",
-                    id="button",
-                ),
             ],
             id="header",
             className="row flex-display",
             style={"margin-bottom": "25px"},
         ),
 
-        dcc.Link('Go to Page 2', href='/page-2'),
-
 html.Div(
-        dbc.Navbar(
+         dbc.Navbar(
             dbc.Container(
                 [
                     html.A(
                         # Use row and col to control vertical alignment of logo / brand
                         dbc.Row(
                             [
-                                dbc.Col(html.Img(src=LOGO, height="30px")),
-                                dbc.Col(dbc.NavbarBrand("Logo", className="ml-2")),
+                                dbc.Col(html.Img(src=LOGO, height="50px")),
                             ],
                             align="center",
                             no_gutters=True,
@@ -258,7 +194,7 @@ html.Div(
                     dbc.NavbarToggler(id="navbar-toggler"),
                     dbc.Collapse(
                         dbc.Nav(
-                            [nav_item, dropdown_nav], className="ml-auto", navbar=True
+                            [page_2_link, project_link_logo], className="ml-auto", navbar=True
                         ),
                         id="navbar-collapse",
                         navbar=True,
@@ -268,8 +204,8 @@ html.Div(
             color="dark",
             dark=True,
             className="mb-5",
-        ),
-),
+         ),
+ ),
 
         # MAIN        
         html.Div(
@@ -308,7 +244,7 @@ html.Div(
                                     'fontWeight': 'bold',
                                     'padding': '8px'
                                 },
-                                style_cell={ 'font-family': ["Open Sans", "HelveticaNeue", "Helvetica Neue", 'Helvetica', 'Arial','sans-serif'],
+                                style_cell={
                                     'backgroundColor': '#f9f9f9',
                                     'fontSize':12, 
                                     'textAlign': 'center',
@@ -333,7 +269,7 @@ html.Div(
                             html.H4("Prices at close", className="control_label"),
                             dcc.Graph(id="stock_chart")],
                             id="countGraphContainer",
-                            className="pretty_container_nav",
+                            className="pretty_container",
                         ),
                     ],
                     id="right-column",
@@ -341,6 +277,7 @@ html.Div(
                 ),
             ],
             className="row flex-display",
+            style={"display": "flex", "flex-direction": "row"}
         ),
     ],
     id="mainContainer",
