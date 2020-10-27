@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&display=swap');
+
+
+.js-plotly-plot .plotly .modebar {
+    padding-top: 5%;
+    margin-right: 3.5%;
+  }
+  
+  body {
+    background-color: #f2f2f2;
+    margin: 0 5%;
+  }
+  
+  .two.columns {
+    width: 16.25%;
+  }
+  
+  .column,
+  .columns {
+    margin-left: 0.5%;
+  }
+  
+  .pretty_container {
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+  }
+
+  .pretty_container_nav {
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+    width:70%;
+  }
+  
+  .bare_container {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+  }
+  
+  .dcc_control {
+    margin: 0;
+    padding: 5px;
+    width: calc(100%-40px);
+  }
+  
+  .control_label {
+    margin: 0;
+    padding: 10px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    width: calc(100%-40px);
+  }
+  
+  .rc-slider {
+    margin-left: 0px;
+    padding-left: 0px;
+  }
+  
+  .flex-display {
+    display: flex;
+  }
+  
+  .container-display {
+    display: flex;
+  }
+  
+  #individual_graph,
+  #aggregate_graph {
+    width: calc(100% - 30px);
+    position: absolute;
+  }
+  
+  #count_graph {
+    position: absolute;
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
+  }
+  
+  #countGraphContainer {
+    flex: 5;
+    position: relative;
+  }
+  
+  #header {
+    align-items: center;
+  }
+  
+  #learn-more-button {
+    text-align: center;
+    height: 100%;
+    padding: 0 20px;
+    text-transform: none;
+    font-size: 15px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 30px;
+  }
+  #title {
+    text-align: center;
+    width: 100%;
+  }
+  #title > div {
+    width: 100%;
+  }
+  
+  .mini_container {
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
+  }
+  
+  #wells {
+    flex: 1;
+  }
+  
+  #gas {
+    flex: 1;
+  }
+  
+  #aggregate_data {
+    align-items: center;
+  }
+  
+  #oil {
+    flex: 1;
+  }
+  
+  #water {
+    flex: 1;
+  }
+  
+  #tripleContainer {
+    display: flex;
+    flex: 3;
+  }
+  
+  #mainContainer {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  #pie_graph > div > div > svg:nth-child(3) > g.infolayer > g.legend {
+    pointer-events: all;
+    transform: translate(30px, 349px);
+  }
+
+#cross-filter-options {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  flex-grow: 0;
+}
+
+#right-column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.main-content-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0 !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p, .navbar {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.navbar > .container {
+  width: 100%;
+  padding: 0 30px;
+  margin: 0;
+  max-width: none;
+}
+
+.navbar-nav .nav-item {
+  margin: 0 20px 0 0;
+}
+
+.navbar-nav .nav-item a, .navbar-nav .nav-item a:hover {
+  transition: all ease-in-out 300ms;
+  text-transform: uppercase;
+  font-weight: lighter;
+}
+
+.github-link {
+  transition: all ease-in-out 300ms;
+  background: rgba(255,255,255,0.5);
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+
+.github-link:hover {
+  background: #fff;
+  border-radius: 100%;
+}
+
+.github-link img {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
