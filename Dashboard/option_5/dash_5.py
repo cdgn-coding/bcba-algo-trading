@@ -12,14 +12,14 @@ import dash_table
 LOGO = "/assets/logo-dh-blanco.png"
 GIT_LOGO = "/assets/github.png"
 
+df = pd.read_pickle("all_tickers_last_decade_features.pkl")
+
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width"}],
     suppress_callback_exceptions=True,
     external_stylesheets=[dbc.themes.JOURNAL]
 )
-
-df = pd.read_pickle("all_tickers_last_decade_features.pkl")
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -127,11 +127,12 @@ nav_item = dbc.NavItem(dbc.NavLink("Link", href="#"))
 
 page_2_link = dbc.NavItem(dbc.NavLink("Ver pronostico", href="/page-2"))
 
-project_link = dbc.NavItem(dbc.NavLink("Ir al codigo del proyecto", href="https://github.com/cnexans/bcba-algo-trading"))
+project_link = dbc.NavItem(dbc.NavLink("Ir al codigo del proyecto", href="https://github.com/cnexans/bcba-algo-trading", target="_blank"))
 
 project_link_logo = html.A(
             html.Img(src=GIT_LOGO, style={ "height": "40px" }),
             href="https://github.com/cnexans/bcba-algo-trading",
+            target="_blank",
             className="github-link"
         )
 
