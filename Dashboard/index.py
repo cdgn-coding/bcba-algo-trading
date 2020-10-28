@@ -6,14 +6,16 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import dash_table
 import pathlib
+from pandas.tseries.offsets import DateOffset
 
 LOGO = "/assets/logo-dh-blanco.png"
 GIT_LOGO = "/assets/github.png"
 
 PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("../option_5/dataset").resolve()
+DATA_PATH = PATH.joinpath("../dashboard/dataset").resolve()
 df = pd.read_pickle(DATA_PATH.joinpath("all_tickers_last_decade_features.pkl"))
 
 app = dash.Dash(
@@ -106,40 +108,39 @@ html.Div(
 
     html.Div(
             [
-            html.Div(
-                [
-                    html.P(
-                        "Tickers:",
-                        className="control_label",
-                    ),
-                    dcc.Dropdown(
-                        options=[{'label': item, 'value': item} for item in df['Ticker'].unique()],
-                        id='ticker_for_dropdown',
-                        multi=False,
-                        className="dcc_control",
-                        value=df['Ticker'].sort_values()[0]
-                    ),
-                ],
-                className="pretty_container four columns",
-                id="cross-filter-options"
-            ),
+           
             # Bloques
             html.Div(
                 [
                     html.Div(
                         [
                             html.Div(
-                                [html.P("Last Price"), html.H6(id="last_price")],
+                                [html.P("Month Variation"), html.H6(id="var_for_1")],
                                 id="wells",
                                 className="mini_container",
                             ),
                             html.Div(
-                                [html.P("Future Variation"), html.H6(id="var_for")],
+                                [html.P("Two Months Variation"), html.H6(id="var_for_2")],
+                                id="wells",
+                                className="mini_container",
+                            ),
+                            html.Div(
+                                [html.P("Three Months Variation"), html.H6(id="var_for_3")],
+                                id="wells",
+                                className="mini_container",
+                            ),
+                            html.Div(
+                                [html.P("Month Price"), html.H6(id="price_for_1")],
+                                id="wells",
+                                className="mini_container",
+                            ),
+                            html.Div(
+                                [html.P("Two Months Price"), html.H6(id="price_for_2")],
                                 id="gas",
                                 className="mini_container",
                             ),
                             html.Div(
-                                [html.P("Price Forecast"), html.H6(id="price_for")],
+                                [html.P("Three Months Price"), html.H6(id="price_for_3")],
                                 id="oil",
                                 className="mini_container",
                             ),
@@ -153,8 +154,19 @@ html.Div(
                         className="row container-display",
                     ),
                     # grafico interno
-                    html.Div(
-                        dcc.Graph(id="stock_for_chart"),
+                    html.Div([
+                        html.P(
+                                "Tickers:",
+                                className="control_label",
+                            ),
+                        dcc.Dropdown(
+                                options=[{'label': item, 'value': item} for item in df['Ticker'].unique()],
+                                id='ticker_for_dropdown',
+                                multi=False,
+                                className="dcc_control",
+                                value=df['Ticker'].sort_values()[0]
+                            ),
+                        dcc.Graph(id="stock_for_chart")],
                         id="countGraphContainer",
                         className="pretty_container",
                     ),
@@ -318,98 +330,115 @@ def display_page(pathname):
         return page_1_layout
     # You could also return a 404 "URL not found" page here
 
-@app.callback([Output('last_price', 'children'),
-            Output('var_for', 'children'),
-            Output('price_for', 'children'),
+@app.callback([Output('var_for_1', 'children'),
+            Output('var_for_2', 'children'),
+            Output('var_for_3', 'children'),
+            Output('price_for_1', 'children'),
+            Output('price_for_2', 'children'),
+            Output('price_for_3', 'children'),
             Output('strategy', 'children')],
             [Input('ticker_for_dropdown','value')])
 def display_values(ticker):
 
+    ticker_history = df.loc[df['Ticker'] == ticker]
+
+    price = round(df.loc[df['Ticker'] == ticker].iloc[-1,:]['Adj Close'],2)
+
     import joblib
 
     PATH = pathlib.Path(__file__).parent
-    DATA_PATH = PATH.joinpath("../option_5/dataset").resolve()
-    modelo = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_1m.joblib"))
+    DATA_PATH = PATH.joinpath("../dashboard/dataset").resolve()
+    modelo_1 = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_1m.joblib"))
+    modelo_2 = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_2m.joblib"))
+    modelo_3 = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_3m.joblib"))
 
-    ticker_history = df.loc[df['Ticker'] == ticker]
-    prediction = modelo.predict(ticker_history)
+    prediction_1 = modelo_1.predict(ticker_history)
+    prediction_2 = modelo_2.predict(ticker_history)
+    prediction_3 = modelo_3.predict(ticker_history)
 
-    var = str(round(prediction[-1],2))
-    price = round(df.loc[df['Ticker'] == ticker].iloc[-1,:]['Adj Close'],2)
-    new_price = round(price * (1 + prediction[-1]),2)
+    var_1 = str(round(prediction_1[-1],2))
+    var_2 = str(round(prediction_2[-1],2))
+    var_3 = str(round(prediction_3[-1],2))
+
+    new_price_1 = round(price * (1 + prediction_1[-1]),2)
+    new_price_2 = round(price * (1 + prediction_2[-1]),2)
+    new_price_3 = round(price * (1 + prediction_3[-1]),2)
 
     # modificar en base a futuras predicciones
     advise = 'Sell'
-    if new_price > price:
+    if new_price_3 > price:
         advise = 'Buy'
 
-    return price, var, new_price, advise
+    return var_1, var_2, var_3, new_price_1, new_price_2, new_price_3, advise
+
+
+from plotly.graph_objs import *
 
 # get value from dropdown and draw it on the figure of the stock chart
 @app.callback(Output('stock_for_chart','figure'),
-            [Input('ticker_for_dropdown','value')])
-def update_for_figure(ticker):
+            [Input('ticker_for_dropdown','value'),
+            Input('price_for_1', 'children'),
+            Input('price_for_2', 'children'),
+            Input('price_for_3', 'children')])
+def update_for_figure(ticker, price_for_1, price_for_2, price_for_3):
     "keep the figure (id=stock_chart) updated with the human selection (input=ticker_dropdown)"
 
-    # empty list to be filled with the scatter/candlestick of each ticker
-    figure = go.Scatter(x=df[df['Ticker'] == ticker].index,
+    new = pd.DataFrame([float(price_for_1), float(price_for_2), float(price_for_3)],
+        columns=['forecast'],
+        index=[df.loc[df['Ticker'] == ticker].index[-1] + DateOffset(months=1),
+            df.loc[df['Ticker'] == ticker].index[-1] + DateOffset(months=2),
+            df.loc[df['Ticker'] == ticker].index[-1] + DateOffset(months=3)])
+
+    trace1 = go.Scatter(x=df[df['Ticker'] == ticker].index,
                         y=df[df['Ticker'] == ticker]['Close'],
-                        mode='lines')
-    
+                        mode='lines',name= ticker +' prices')
+
+    trace2 = go.Scatter(x=new.index,
+                        y=new.forecast,
+                        mode='markers',name=ticker+ ' forecast')
+
+    graf = [trace1, trace2]
+
     layout = dict(
-            xaxis = dict(
-            showgrid= False,
-            zeroline= False,
-            rangeslider=dict(
-            visible=True
-            ),
-            type='date',
-            rangeselector = dict(
-                buttons=list([
-                    dict(count=1,
-                         label='1m',
-                         step='month',
-                         stepmode='backward'),
-                    dict(count=6,
-                         label='6m',
-                         step='month',
-                         stepmode='backward'),
-                    dict(step='all')
-                    ])
+                xaxis = dict(
+                showgrid= False,
+                zeroline= False,
+                rangeslider=dict(
+                visible=True
+                ),
+                type='date',
+                rangeselector = dict(
+                    buttons=list([
+                        dict(count=1,
+                            label='1m',
+                            step='month',
+                            stepmode='backward'),
+                        dict(count=6,
+                            label='6m',
+                            step='month',
+                            stepmode='backward'),
+                        dict(step='all')
+                        ])
+                    )
+                ),
+                yaxis = {
+                "showgrid": True,
+                "zeroline": True,
+                },
+                margin=dict(l=30, r=30, b=0, t=40),
+                hovermode="closest",
+                plot_bgcolor="#F9F9F9",
+                paper_bgcolor="#F9F9F9",
+                legend=dict(font=dict(size=10),
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="right",
+                    x=1)
                 )
-            ),
-            yaxis = {
-            "showgrid": True,
-            "zeroline": True,
-            },
-            margin=dict(l=30, r=30, b=0, t=40),
-            hovermode="closest",
-            plot_bgcolor="#F9F9F9",
-            paper_bgcolor="#F9F9F9",
-            legend=dict(font=dict(size=10),
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1)
-            )
-    
+        
     # data must be a list of objects and not a list of lists
-    return {"data": [figure], 'layout':layout}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return {"data": graf, 'layout':layout}
 
 
 # get value from dropdown and draw it on the figure of the stock chart
