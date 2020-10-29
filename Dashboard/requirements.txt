@@ -8,3 +8,4 @@ plotly
 dash_table
 xgboost==1.1.1
 scikit-learn
+gunicorn

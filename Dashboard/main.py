@@ -544,4 +544,4 @@ def update_table(selected_tickers,page_current,page_size):
     return data.iloc[page_current*page_size:(page_current+ 1)*page_size].to_dict('records')
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(host='0.0.0.0', port=8080, debug=True)
