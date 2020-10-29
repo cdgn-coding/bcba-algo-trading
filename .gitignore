@@ -7,4 +7,4 @@ notas
 __pycache__
 .ipynb_checkpoints
 /Dashboard/.ipynb_checkpoints
-
+Dashboard/dataset/*.csv
