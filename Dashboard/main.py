@@ -10,19 +10,28 @@ from plotly.subplots import make_subplots
 import dash_table
 import pathlib
 from pandas.tseries.offsets import DateOffset
+import joblib
+import os
+import flask
 
-LOGO = "/assets/logo-dh-blanco.png"
-GIT_LOGO = "/assets/github.png"
 
-PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("../dashboard/dataset").resolve()
-df = pd.read_pickle(DATA_PATH.joinpath("all_tickers_last_decade_features.pkl"))
+LOGO = "./assets/logo-dh-blanco.png"
+GIT_LOGO = "./assets/github.png"
+
+print('Loading dataset...')
+current_directory = pathlib.Path(__file__).resolve().parent
+print(f'Current directory {current_directory}')
+df = pd.read_csv(os.path.join(current_directory, 'dataset', 'all_tickers_last_decade_features.csv'), index_col=0, parse_dates=True)
+print('Dataset loaded...')
+print('Creating server...')
+server = flask.Flask(__name__)
 
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width"}],
     suppress_callback_exceptions=True,
-    external_stylesheets=[dbc.themes.JOURNAL]
+    external_stylesheets=[dbc.themes.JOURNAL],
+    server=server
 )
 
 app.layout = html.Div([
@@ -347,13 +356,10 @@ def display_values(ticker):
 
     price = round(df.loc[df['Ticker'] == ticker].iloc[-1,:]['Adj Close'],2)
 
-    import joblib
 
-    PATH = pathlib.Path(__file__).parent
-    DATA_PATH = PATH.joinpath("../dashboard/dataset").resolve()
-    modelo_1 = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_1m.joblib"))
-    modelo_2 = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_2m.joblib"))
-    modelo_3 = joblib.load(DATA_PATH.joinpath("trained_model_Forward_Return_3m.joblib"))
+    modelo_1 = joblib.load(os.path.join(current_directory, 'dataset', 'trained_model_Forward_Return_1m.joblib'))
+    modelo_2 = joblib.load(os.path.join(current_directory, 'dataset', 'trained_model_Forward_Return_2m.joblib'))
+    modelo_3 = joblib.load(os.path.join(current_directory, 'dataset', 'trained_model_Forward_Return_3m.joblib'))
 
     prediction_1 = modelo_1.predict(ticker_history)
     prediction_2 = modelo_2.predict(ticker_history)
@@ -544,4 +550,4 @@ def update_table(selected_tickers,page_current,page_size):
     return data.iloc[page_current*page_size:(page_current+ 1)*page_size].to_dict('records')
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(host='0.0.0.0', port=8080, debug=True)

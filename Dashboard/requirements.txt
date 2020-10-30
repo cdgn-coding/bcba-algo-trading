@@ -1,0 +1,11 @@
+pandas
+dash
+dash-core-components
+dash-html-components
+dash-bootstrap-components
+joblib
+plotly
+dash_table
+xgboost==1.1.1
+scikit-learn
+gunicorn
