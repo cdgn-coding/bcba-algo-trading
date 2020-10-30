@@ -21,7 +21,7 @@ GIT_LOGO = "./assets/github.png"
 print('Loading dataset...')
 current_directory = pathlib.Path(__file__).resolve().parent
 print(f'Current directory {current_directory}')
-df = pd.read_csv(os.path.join(current_directory, 'dataset', 'all_tickers_last_decade_features.csv'), index_col=0)
+df = pd.read_csv(os.path.join(current_directory, 'dataset', 'all_tickers_last_decade_features.csv'), index_col=0, parse_dates=True)
 print('Dataset loaded...')
 print('Creating server...')
 server = flask.Flask(__name__)
