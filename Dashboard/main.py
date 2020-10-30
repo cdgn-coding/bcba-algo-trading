@@ -349,6 +349,9 @@ def display_page(pathname):
             [Input('ticker_for_dropdown','value')])
 def display_values(ticker):
 
+    if ticker == None:
+        ticker = 'AABA'
+
     ticker_history = df.loc[df['Ticker'] == ticker]
 
     price = round(df.loc[df['Ticker'] == ticker].iloc[-1,:]['Adj Close'],2)
@@ -388,6 +391,9 @@ from plotly.graph_objs import *
             Input('price_for_3', 'children')])
 def update_for_figure(ticker, price_for_1, price_for_2, price_for_3):
     "keep the figure (id=stock_chart) updated with the human selection (input=ticker_dropdown)"
+
+    if ticker == None:
+        ticker = 'AABA'
 
     new = pd.DataFrame([float(price_for_1), float(price_for_2), float(price_for_3)],
         columns=['forecast'],
