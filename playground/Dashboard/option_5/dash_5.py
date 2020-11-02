@@ -12,7 +12,7 @@ import dash_table
 LOGO = "/assets/logo-dh-blanco.png"
 GIT_LOGO = "/assets/github.png"
 
-df = pd.read_pickle("all_tickers_last_decade_features.pkl")
+df = pd.read_csv("/home/thomas/Descargas/all_tickers_last_decade_features_usd.csv")
 
 app = dash.Dash(
     __name__,
