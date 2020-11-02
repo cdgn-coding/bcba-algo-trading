@@ -83,6 +83,13 @@ Cada uno de estos scripts produce varios archivos que son alojados en la nube: l
 
 Los modelos efectivamente entrenados se encuentran en la carpetas ```models```, ```models_v2```, ```models_v3``` que corresponden con la salida de los scripts de entrenamiento descritos anteriormente. En la carpeta ```best_models``` están los mejores algoritmos entrenados entre todos los realizados junto con sus respectivos scores de: error cuadrático medio, raíz del error cuadrático medio, el coeficiente sprearman y el p valor del mismo.
 
+## Visitá nuestro Dashboard
+
+[Dashboard](https://bcbaalgotrading.herokuapp.com/)
+
+![](https://github.com/cnexans/bcba-algo-trading/blob/master/dashboard.png)
+
+
 ## Equipo
 
 * [David G. Nexans](https://github.com/cnexans)
